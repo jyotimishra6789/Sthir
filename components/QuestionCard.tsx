@@ -13,7 +13,7 @@ export default function QuestionCard({
 }: QuestionCardProps) {
   return (
     <div className="bg-white p-6 rounded-2xl shadow-md border mb-6">
-      <h3 className="text-lg font-semibold mb-4">
+      <h3 className="text-lg font-semibold mb-4 text-black">
         {index + 1}. {question}
       </h3>
 
@@ -21,11 +21,10 @@ export default function QuestionCard({
         {[5, 4, 3, 2, 1, 0].map((opt) => (
           <label
             key={opt}
-            className={`cursor-pointer p-3 rounded-xl border text-sm transition text-center ${
-              value === opt
-                ? "bg-green-500 text-white border-green-600"
-                : "bg-gray-100 border-gray-300"
-            }`}
+            className={`cursor-pointer p-3 rounded-xl border text-sm transition text-center 
+            ${value === opt
+              ? "bg-green-500 text-white border-green-600"
+              : "bg-gray-100 text-black border-gray-300"}`}
           >
             <input
               type="radio"

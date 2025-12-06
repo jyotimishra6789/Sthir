@@ -20,17 +20,13 @@ export default function CheckinPage() {
     }
 
     const totalScore = answers.reduce((sum, val) => sum + val, 0);
-
     alert(`Your Wellness Score is: ${totalScore}`);
-
-    // Baad me: Save to localStorage
-    // window.localStorage.setItem("sthir-latest-score", totalScore.toString());
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 p-6">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-6">
+        <h1 className="text-3xl font-bold text-center mb-6 text-black">
           Daily Wellness Test
         </h1>
 
