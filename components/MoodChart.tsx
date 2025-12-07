@@ -31,7 +31,7 @@ export default function MoodChart({ answers }: MoodChartProps) {
           <XAxis dataKey="name" tick={{ fill: "black" }} />
           <YAxis domain={[0, 5]} tick={{ fill: "black" }} />
           <Tooltip />
-          <Bar dataKey="score" />
+          <Bar dataKey="score" fill ="green" />
         </BarChart>
       </ResponsiveContainer>
     </div>
