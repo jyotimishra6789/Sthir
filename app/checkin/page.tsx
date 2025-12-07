@@ -1,13 +1,11 @@
-
 "use client";
 import { useState } from "react";
 import { questions } from "@/lib/questions";
 import QuestionCard from "@/components/QuestionCard";
 
-
 export default function CheckinPage() {
   const [answers, setAnswers] = useState<number[]>(Array(10).fill(null));
-  
+
   const updateAnswer = (index: number, value: number) => {
     const newAnswers = [...answers];
     newAnswers[index] = value;
@@ -21,9 +19,13 @@ export default function CheckinPage() {
     }
 
     const totalScore = answers.reduce((sum, val) => sum + val, 0);
-    localStorage.setItem("sthir-score",ScreenOrientation.toString());
-    localStorage.setItem("sthir-answers",JSON.stringify(answers));
-    window.location.href='/advice';
+
+    // SAVE SCORE CORRECTLY
+    localStorage.setItem("sthir-score", totalScore.toString());
+    localStorage.setItem("sthir-answers", JSON.stringify(answers));
+
+    // REDIRECT
+    window.location.href = "/advice";
   };
 
   return (
