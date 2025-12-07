@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function WellnessCard() {
   return (
-    <div className="bg-white shadow-lg p-6 rounded-2xl border-2 border-black">
+    <div className="bg-white w-100 shadow-lg p-6 rounded-2xl border-2 border-black">
       <h2 className="text-xl font-semibold text-black">Take your Wellness Test</h2>
 
       <p className="text-black-600 mt-2 text-black">
