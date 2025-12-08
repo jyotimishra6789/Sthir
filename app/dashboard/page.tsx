@@ -17,7 +17,7 @@ export default function DashboardPage() {
       try {
         const parsed = JSON.parse(storedAnswers);
         if (Array.isArray(parsed)) {
-          // ensure numbers
+      
           const cleaned = parsed.map((v: any) =>
             typeof v === "number" ? v : 0
           );
@@ -57,6 +57,7 @@ export default function DashboardPage() {
           >
             Go to Test
           </a>
+          <div className="bg-white rounded-2xl shadow-md border border-black p-6 mt-6"><h2 className="text-xl font-semibold text-black mb-2">Daily Mood Tip</h2><p className="text-black text-lg">{fact}</p></div>
         </div>
       </div>
     );
