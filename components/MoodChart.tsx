@@ -21,12 +21,13 @@ export default function MoodChart({ answers }: MoodChartProps) {
   }));
 
   return (
-    <div className="w-full h-80 bg-white rounded-2xl shadow-md border border-black p-4">
+    <div className="w-full h-80 bg-white rounded-2xl shadow-md border border-black p-6">
       <h2 className="text-xl font-semibold mb-4 text-black">
         Question-wise Response (0–5)
       </h2>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+        <BarChart data={data}   margin={{ left: 4, right: 10, top: 5, bottom: 10 }}
+>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" tick={{ fill: "black" }} />
           <YAxis domain={[0, 5]} tick={{ fill: "black" }} />
