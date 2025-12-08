@@ -1,17 +1,20 @@
-🌿 Sthir — A Mental Wellness Check-In App
+🌿 Sthir — Mental Wellness App
 
-Sthir is a simple and calming daily mood-tracking app built with Next.js and React, designed to help students and individuals understand their emotional patterns and manage stress better.
+Sthir is a simple mental-wellness check-in app built with Next.js, React, TailwindCSS, and Recharts.
+Users take a daily test, receive score-based advice, and view a detailed visual report.
 
-The goal of Sthir is to provide a quick, intuitive way to:
+✨ Features
 
-Track your mood every day
+WHO-inspired 10-question wellness test
 
-Note your stress level
+0–5 scale scoring (Total: 0–50)
 
-Write short daily reflections
+LocalStorage data saving
 
-Visualize your emotional trends over time
+Personalized AI-style advice
 
-Receive supportive insights to improve your well-being
+Dynamic daily fun fact
 
-Sthir promotes emotional awareness and stability — helping users stay balanced, mindful, and sthir (stable) in their daily life
+Bar chart report using Recharts
+
+Clean UI components (cards, summary, chart, tips)
