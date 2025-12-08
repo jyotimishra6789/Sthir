@@ -32,7 +32,7 @@ export default function MoodChart({ answers }: MoodChartProps) {
           <XAxis dataKey="name" tick={{ fill: "black" }} />
           <YAxis domain={[0, 5]} tick={{ fill: "black" }} />
           <Tooltip />
-          <Bar dataKey="score" fill ="green" isAnimationActive={true} animationDuration={1200} animationBegin={200} animationEasing="ease-out"/>
+          <Bar dataKey="score" fill ="green" isAnimationActive={true} animationDuration={1200} animationBegin={200}  animationEasing="ease-out"radius={[6,6,0,0]}/>
         </BarChart>
       </ResponsiveContainer>
     </div>
