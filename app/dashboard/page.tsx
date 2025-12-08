@@ -1,15 +1,17 @@
 "use client";
-
+import {funFacts} from "@/lib/funfacts";
 import { useEffect, useState } from "react";
 import MoodChart from "@/components/MoodChart";
 
 export default function DashboardPage() {
   const [answers, setAnswers] = useState<number[] | null>(null);
   const [score, setScore] = useState<number | null>(null);
-
+  const [fact, setFact]= useState("");
   useEffect(() => {
     const storedAnswers = localStorage.getItem("sthir-answers");
     const storedScore = localStorage.getItem("sthir-score");
+    const random=funFacts[Math.floor(Math.random()*funFacts.length)];
+    setFact(random);
 
     if (storedAnswers) {
       try {
