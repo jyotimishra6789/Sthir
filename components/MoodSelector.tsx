@@ -20,6 +20,7 @@ export default function MoodSelector(){
             <div className="flexgap-4 justify-between">
                 {moods.map((mood)=>(
                     <button key={mood.emoji} onClick={()=>handleSelect(mood.emoji)}
+                    className={`text-3xl p-2 rounded-xl transition %{selectedMood===mood.emoji ? "bg-green -200 scale-110":"bg-gray-100}`}></button>
                 )
 
                 )}
