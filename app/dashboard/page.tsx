@@ -8,11 +8,12 @@ export default function DashboardPage() {
   const [answers, setAnswers] = useState<number[] | null>(null);
   const [score, setScore] = useState<number | null>(null);
   const [fact, setFact] = useState("");
-
+  const [mood,setMood]=useState<string | null>(null);
   useEffect(() => {
     const storedAnswers = localStorage.getItem("sthir-answers");
     const storedScore = localStorage.getItem("sthir-score");
-
+    const storedMood=localStorage.getItem("sthir-mood");
+    if(storedMood) setMood(storedMood);
     const random = funFacts[Math.floor(Math.random() * funFacts.length)];
     setFact(random);
 
