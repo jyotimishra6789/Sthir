@@ -12,6 +12,22 @@ WHO-inspired 10-question wellness test
 LocalStorage data saving
 
 Personalized AI-style advice
+✔ Daily Mood Selector (NEW)
+
+A simple mood tracker that lets the user choose:
+
+😄 Very Happy
+🙂 Happy
+😐 Neutral
+☹️ Sad
+😭 Very Sad
+
+Saves selected mood in localStorage
+
+Dashboard shows:
+"Today's Mood: 🙂"
+
+Clean UI with emoji buttons and smooth highlight effect
 
 Dynamic daily fun fact
 
