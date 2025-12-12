@@ -1,30 +1,39 @@
-"use client"
-import {useState} from "react"
-const moods=[
-    {emoji:"😄", label:"Very happy"},
-    {emoji:"😄", label:"Happy"},
-    {emoji:"😄", label:"Neutral"},
-    {emoji:"😄", label:"Sad"},
-    {emoji:"😄", label:"Very Sad"},
+"use client";
 
+import { useState } from "react";
+
+const moods = [
+  { emoji: "😄", label: "Very Happy" },
+  { emoji: "🙂", label: "Happy" },
+  { emoji: "😐", label: "Neutral" },
+  { emoji: "☹️", label: "Sad" },
+  { emoji: "😭", label: "Very Sad" },
 ];
-export default function MoodSelector(){
-    const [selectedMood,setSelectedMood]=useState("");
-    const handleSelect=(emoji:string)=>{
-        setSelectedMood(emoji);
-        localStorage.setItem("sthir-mood",emoji);
-    };
-    return(
-        <div className="bg-white shadow-md border-black rounded-2xl p-5">
-            <h2 className="text-xl font-semi-bold text-black mb-3">Select Mood</h2>
-            <div className="flexgap-4 justify-between">
-                {moods.map((mood)=>(
-                    <button key={mood.emoji} onClick={()=>handleSelect(mood.emoji)}
-                    className={`text-3xl p-2 rounded-xl transition %{selectedMood===mood.emoji ? "bg-green -200 scale-110":"bg-gray-100}`}>{mood.emoji}</button>
-                )
 
-                )}
-            </div>
-        </div>
-    )
+export default function MoodSelector() {
+  const [selectedMood, setSelectedMood] = useState<string | null>(null);
+
+  const handleSelect = (emoji: string) => {
+    setSelectedMood(emoji);
+    localStorage.setItem("sthir-mood", emoji);
+  };
+
+  return (
+    <div className="bg-white shadow-md border border-black rounded-2xl p-5">
+      <h2 className="text-xl font-semibold text-black mb-3">Select Your Mood Today</h2>
+
+      <div className="flex gap-4 justify-between">
+        {moods.map((mood) => (
+          <button
+            key={mood.emoji}
+            onClick={() => handleSelect(mood.emoji)}
+            className={`text-3xl p-2 rounded-xl transition 
+            ${selectedMood === mood.emoji ? "bg-green-200 scale-110" : "bg-gray-100"}`}
+          >
+            {mood.emoji}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 }
