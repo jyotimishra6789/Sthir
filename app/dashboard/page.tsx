@@ -129,6 +129,8 @@ export default function DashboardPage() {
           </h2>
           <p className="text-black text-lg">{fact}</p>
         </div>
+        {mood && (<p className="text-lg text-black mt-2">
+          Today's Mood:<span className="text-3xl">{mood}</span></p>)}
       </div>
     </div>
   );
