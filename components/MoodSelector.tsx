@@ -9,7 +9,9 @@ const moods = [
   { emoji: "☹️", label: "Sad" },
   { emoji: "😭", label: "Very Sad" },
 ];
-
+interface MoodSelectorProps{
+  onMoodChange?:(mood:string)=>void;
+}
 export default function MoodSelector() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
 
