@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 const moods = [
   { emoji: "😄", label: "Very Happy" },
   { emoji: "🙂", label: "Happy" },
@@ -13,7 +15,18 @@ interface MoodSelectorProps {
 }
 
 export default function MoodSelector({ onMoodChange }: MoodSelectorProps) {
+  const [selectedMood, setSelectedMood] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedMood = localStorage.getItem("sthir-mood");
+    if (savedMood) {
+      setSelectedMood(savedMood);
+      onMoodChange?.(savedMood);
+    }
+  }, [onMoodChange]);
+
   const handleSelect = (emoji: string) => {
+    setSelectedMood(emoji);
     localStorage.setItem("sthir-mood", emoji);
     onMoodChange?.(emoji);
   };
@@ -29,7 +42,13 @@ export default function MoodSelector({ onMoodChange }: MoodSelectorProps) {
           <button
             key={mood.emoji}
             onClick={() => handleSelect(mood.emoji)}
-            className="text-3xl p-2 rounded-xl bg-gray-100 hover:bg-green-200 transition"
+            className={`text-3xl p-3 rounded-xl transition
+              ${
+                selectedMood === mood.emoji
+                  ? "bg-green-300 scale-110"
+                  : "bg-gray-100 hover:bg-green-200"
+              }`}
+            title={mood.label}
           >
             {mood.emoji}
           </button>
