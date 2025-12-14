@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 
 const moods = [
-  { emoji: "😄", label: "Very Happy" },
-  { emoji: "🙂", label: "Happy" },
-  { emoji: "😐", label: "Neutral" },
-  { emoji: "☹️", label: "Sad" },
-  { emoji: "😭", label: "Very Sad" },
+  { emoji: "😄", label: "Very Happy", color: "bg-green-200" },
+  { emoji: "🙂", label: "Happy", color: "bg-lime-200" },
+  { emoji: "😐", label: "Neutral", color: "bg-yellow-200" },
+  { emoji: "☹️", label: "Sad", color: "bg-orange-200" },
+  { emoji: "😭", label: "Very Sad", color: "bg-red-200" },
 ];
 
 interface MoodSelectorProps {
@@ -32,28 +32,43 @@ export default function MoodSelector({ onMoodChange }: MoodSelectorProps) {
   };
 
   return (
-    <div className="bg-white shadow-md border border-black rounded-2xl p-5">
-      <h2 className="text-xl font-semibold text-black mb-3">
-        Select Your Mood Today
+    <div className="bg-white shadow-lg border border-black rounded-2xl p-6">
+      <h2 className="text-xl font-semibold text-black mb-1">
+        How are you feeling today?
       </h2>
+      <p className="text-sm text-gray-600 mb-4">
+        Select the emoji that best matches your mood
+      </p>
 
-      <div className="flex gap-4 justify-between">
-        {moods.map((mood) => (
-          <button
-            key={mood.emoji}
-            onClick={() => handleSelect(mood.emoji)}
-            className={`text-3xl p-3 rounded-xl transition
-              ${
-                selectedMood === mood.emoji
-                  ? "bg-green-300 scale-110"
-                  : "bg-gray-100 hover:bg-green-200"
-              }`}
-            title={mood.label}
-          >
-            {mood.emoji}
-          </button>
-        ))}
+      <div className="grid grid-cols-5 gap-3 text-center">
+        {moods.map((mood) => {
+          const isSelected = selectedMood === mood.emoji;
+
+          return (
+            <button
+              key={mood.emoji}
+              onClick={() => handleSelect(mood.emoji)}
+              className={`rounded-xl p-3 transition transform
+                ${
+                  isSelected
+                    ? `${mood.color} scale-110 ring-2 ring-black`
+                    : "bg-gray-100 hover:bg-gray-200"
+                }`}
+            >
+              <div className="text-3xl mb-1">{mood.emoji}</div>
+              <div className="text-xs font-medium text-black">
+                {mood.label}
+              </div>
+            </button>
+          );
+        })}
       </div>
+
+      {selectedMood && (
+        <p className="mt-4 text-sm text-green-700 font-medium text-center">
+          Mood saved successfully ✔
+        </p>
+      )}
     </div>
   );
 }
