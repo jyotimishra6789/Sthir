@@ -1,34 +1,45 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+"use client";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Sthir",
-   description: "A daily mental wellness check-in app inspired by WHO well-being guidelines.",
+import { useEffect, useState } from "react";
+export const metadata = {
+  title: "Sthir – Mental Wellness App",
+  description:
+    "Sthir is a daily mental wellness app to track mood, reflect on emotions, and find balance through mindful check-ins.",
 };
-
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // 2 seconds splash
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <html lang="en">
+        <body>
+          <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-green-100 to-blue-100">
+            <div className="w-14 h-14 border-4 border-green-500 border-t-transparent rounded-full animate-spin mb-6"></div>
+            <h1 className="text-3xl font-bold text-black">Sthir</h1>
+            <p className="text-gray-700 mt-2">
+              Finding your balance…
+            </p>
+          </div>
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
