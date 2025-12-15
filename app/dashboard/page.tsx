@@ -5,26 +5,26 @@ import { useEffect, useState } from "react";
 import MoodChart from "@/components/MoodChart";
 
 export default function DashboardPage() {
+  const [mounted, setMounted] = useState(false);
   const [answers, setAnswers] = useState<number[] | null>(null);
   const [score, setScore] = useState<number | null>(null);
   const [fact, setFact] = useState("");
-  const [mood,setMood]=useState<string | null>(null);
+  const [mood, setMood] = useState<string | null>(null);
+
   useEffect(() => {
+    setMounted(true);
+
     const storedAnswers = localStorage.getItem("sthir-answers");
     const storedScore = localStorage.getItem("sthir-score");
-    const storedMood=localStorage.getItem("sthir-mood");
-    if(storedMood) setMood(storedMood);
-    const random = funFacts[Math.floor(Math.random() * funFacts.length)];
-    setFact(random);
+    const storedMood = localStorage.getItem("sthir-mood");
+
+    if (storedMood) setMood(storedMood);
 
     if (storedAnswers) {
       try {
         const parsed = JSON.parse(storedAnswers);
         if (Array.isArray(parsed)) {
-          const cleaned = parsed.map((v: any) =>
-            typeof v === "number" ? v : 0
-          );
-          setAnswers(cleaned);
+          setAnswers(parsed.map((v) => (typeof v === "number" ? v : 0)));
         }
       } catch (e) {
         console.error("Error parsing answers:", e);
@@ -34,7 +34,12 @@ export default function DashboardPage() {
     if (storedScore && !isNaN(parseInt(storedScore))) {
       setScore(parseInt(storedScore));
     }
+
+    const random = funFacts[Math.floor(Math.random() * funFacts.length)];
+    setFact(random);
   }, []);
+
+  if (!mounted) return null;
 
   const getStatus = (s: number) => {
     if (s >= 41) return "Excellent well-being 😄";
@@ -96,6 +101,12 @@ export default function DashboardPage() {
               <p className="text-md text-black mt-2">{getStatus(score)}</p>
             </>
           )}
+
+          {mood && (
+            <p className="text-lg text-black mt-2">
+              Today&apos;s Mood: <span className="text-3xl">{mood}</span>
+            </p>
+          )}
         </div>
 
         <MoodChart answers={answers} />
@@ -129,8 +140,6 @@ export default function DashboardPage() {
           </h2>
           <p className="text-black text-lg">{fact}</p>
         </div>
-        {mood && (<p className="text-lg text-black mt-2">
-          Today's Mood:<span className="text-3xl">{mood}</span></p>)}
       </div>
     </div>
   );
