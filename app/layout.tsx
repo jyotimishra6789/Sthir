@@ -1,3 +1,4 @@
+import "./globals.css";
 import LoaderWrapper from "./loader-wrapper";
 
 export const metadata = {
@@ -13,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body suppressHydrationWarning>
         <LoaderWrapper>{children}</LoaderWrapper>
       </body>
     </html>
