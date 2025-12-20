@@ -24,7 +24,7 @@ export default function LoaderWrapper({
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-green-100 to-blue-100">
         <img
-          src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzJ1enl1Y2l6YmtzZHdtdGNmdnVzMzFvaDF1ZHhyM3NoZmx2bmQwNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VJZydMVUF8Pyi1qlIR/giphy.gif"
+          src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGFkem45a2QwNWsxcDR4bnd1dmNyZnRhMDNvNGI0ZDg0ZmpvZjFvbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fY7tXnYwurNH9vR4PZ/giphy.gif"
           alt="Loading..."
         
         />
