@@ -26,7 +26,7 @@ export default function LoaderWrapper({
         <img
         className="w-40 h-40 mb-4"
 
-          src="https://tenor.com/bCQxZ.gif"
+          src="https://tenor.com/en-IN/view/thoughts-are-not-facts-mtv-mental-health-mental-health-action-day-patience-gif-21612445"
           alt="Loading..."
         
         />
