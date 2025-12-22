@@ -26,7 +26,7 @@ export default function LoaderWrapper({
         <img
         className="w-40 h-40 mb-4"
 
-          src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMW01a2hhMHo0ZnF4dHpmZDhtamw0Zndramc3bGJnM3RuZXN0d2FoZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/0tcm0qD0k4ev6Qiln1/giphy.gif"
+          src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGV0ZXFqdXMzcHJkaHhlbWtyd3o4emx3cGtsNjgxMGw2OHl0Zmh3ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oEduR6BxaE9undCIU/giphy.gif"
           alt="Loading..."
         
         />
