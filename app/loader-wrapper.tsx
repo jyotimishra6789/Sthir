@@ -24,15 +24,14 @@ export default function LoaderWrapper({
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-green-100 to-blue-100">
         <img
-        className="w-100 h-100 "
+        className="w-100 h-100 mb-5 "
 
           src="/loader.gif"
           alt="Loading..."
         
         />
-
         <h1 className="text-3xl font-bold text-black">Sthir</h1>
-        <p className="text-gray-700 mt-2 text-center max-w-xs">
+        <p className="text-gray-700 mt- -3 text-center max-w-xs">
           Finding your balance…
         </p>
       </div>
