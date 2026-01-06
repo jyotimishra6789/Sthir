@@ -10,29 +10,40 @@ export default function DashboardPage() {
   const [score, setScore] = useState<number | null>(null);
   const [fact, setFact] = useState("");
   const [mood, setMood] = useState<string | null>(null);
+
   const getMentalLoad = (score: number) => {
-  const avg = score / 10;
+    const avg = score / 10;
 
-  if (avg <= 1.5)
+    if (avg <= 1.5) {
+      return {
+        label: "Light Mental Load 🟢",
+        message: "You seem mentally relaxed today. Keep this balance.",
+        color: "bg-green-100 text-green-800",
+      };
+    }
+
+    if (avg <= 3.5) {
+      return {
+        label: "Moderate Mental Load 🟡",
+        message: "You’re handling things, but some mental pressure is present.",
+        color: "bg-yellow-100 text-yellow-800",
+      };
+    }
+
     return {
-      label: "Light Mental Load 🟢",
-      message: "You seem mentally relaxed today. Keep this balance.",
-      color: "bg-green-100 text-green-800",
+      label: "Heavy Mental Load 🔴",
+      message: "Your mind seems overloaded today. Rest and slow down if you can.",
+      color: "bg-red-100 text-red-800",
     };
-
-  if (avg <= 3.5)
-    return {
-      label: "Moderate Mental Load 🟡",
-      message: "You’re handling things, but some mental pressure is present.",
-      color: "bg-yellow-100 text-yellow-800",
-    };
-
-  return {
-    label: "Heavy Mental Load 🔴",
-    message: "Your mind seems overloaded today. Rest and slow down if you can.",
-    color: "bg-red-100 text-red-800",
   };
-};
+
+  const getStatus = (s: number) => {
+    if (s >= 41) return "Excellent well-being 😄";
+    if (s >= 31) return "Good well-being 🙂";
+    if (s >= 21) return "Moderate well-being 😐";
+    if (s >= 11) return "Low well-being ☹️";
+    return "Very low well-being 😭";
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -49,28 +60,21 @@ export default function DashboardPage() {
         if (Array.isArray(parsed)) {
           setAnswers(parsed.map((v) => (typeof v === "number" ? v : 0)));
         }
-      } catch (e) {
-        console.error("Error parsing answers:", e);
+      } catch (err) {
+        console.error("Error parsing answers", err);
       }
     }
 
-    if (storedScore && !isNaN(parseInt(storedScore))) {
-      setScore(parseInt(storedScore));
+    if (storedScore && !isNaN(Number(storedScore))) {
+      setScore(Number(storedScore));
     }
 
-    const random = funFacts[Math.floor(Math.random() * funFacts.length)];
-    setFact(random);
+    const randomFact =
+      funFacts[Math.floor(Math.random() * funFacts.length)];
+    setFact(randomFact);
   }, []);
 
   if (!mounted) return null;
-
-  const getStatus = (s: number) => {
-    if (s >= 41) return "Excellent well-being 😄";
-    if (s >= 31) return "Good well-being 🙂";
-    if (s >= 21) return "Moderate well-being 😐";
-    if (s >= 11) return "Low well-being ☹️";
-    return "Very low well-being 😭";
-  };
 
   if (!answers) {
     return (
@@ -109,6 +113,7 @@ export default function DashboardPage() {
           Detailed Wellness Report
         </h1>
 
+        {/* Summary */}
         <div className="bg-white rounded-2xl shadow-md border border-black p-6">
           <h2 className="text-2xl font-semibold text-black mb-2">
             Today&apos;s Summary
@@ -121,7 +126,9 @@ export default function DashboardPage() {
                 <span className="font-bold text-green-600">{score}</span> / 50
               </p>
 
-              <p className="text-md text-black mt-2">{getStatus(score)}</p>
+              <p className="text-md text-black mt-2">
+                {getStatus(score)}
+              </p>
             </>
           )}
 
@@ -132,8 +139,27 @@ export default function DashboardPage() {
           )}
         </div>
 
+        {/* Mental Load Meter */}
+        {score !== null && (
+          <div
+            className={`rounded-2xl shadow-md border border-black p-6 ${getMentalLoad(score).color}`}
+          >
+            <h2 className="text-xl font-semibold mb-2 text-black">
+              Mental Load Meter
+            </h2>
+            <p className="text-lg font-bold">
+              {getMentalLoad(score).label}
+            </p>
+            <p className="mt-2">
+              {getMentalLoad(score).message}
+            </p>
+          </div>
+        )}
+
+        {/* Chart */}
         <MoodChart answers={answers} />
 
+        {/* Buttons */}
         <div className="flex flex-wrap gap-4 mt-4">
           <a
             href="/advice"
@@ -157,6 +183,7 @@ export default function DashboardPage() {
           </a>
         </div>
 
+        {/* Fun Fact */}
         <div className="bg-white rounded-2xl shadow-md border border-black p-6 mt-6">
           <h2 className="text-xl font-semibold text-black mb-2">
             Daily Mood Tip 🌿
