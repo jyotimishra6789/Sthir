@@ -10,6 +10,29 @@ export default function DashboardPage() {
   const [score, setScore] = useState<number | null>(null);
   const [fact, setFact] = useState("");
   const [mood, setMood] = useState<string | null>(null);
+  const getMentalLoad = (score: number) => {
+  const avg = score / 10;
+
+  if (avg <= 1.5)
+    return {
+      label: "Light Mental Load 🟢",
+      message: "You seem mentally relaxed today. Keep this balance.",
+      color: "bg-green-100 text-green-800",
+    };
+
+  if (avg <= 3.5)
+    return {
+      label: "Moderate Mental Load 🟡",
+      message: "You’re handling things, but some mental pressure is present.",
+      color: "bg-yellow-100 text-yellow-800",
+    };
+
+  return {
+    label: "Heavy Mental Load 🔴",
+    message: "Your mind seems overloaded today. Rest and slow down if you can.",
+    color: "bg-red-100 text-red-800",
+  };
+};
 
   useEffect(() => {
     setMounted(true);
