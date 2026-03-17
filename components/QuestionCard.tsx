@@ -12,35 +12,44 @@ export default function QuestionCard({
   onChange,
 }: QuestionCardProps) {
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-md border mb-6">
-      <h3 className="text-lg font-semibold mb-4 text-black">
-        {index + 1}. {question}
+    <div className="glass-card p-6 sm:p-8 mb-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+      <h3 className="text-xl font-bold mb-6 text-slate-800">
+        <span className="text-teal-600 mr-2">{index + 1}.</span> {question}
       </h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {[5, 4, 3, 2, 1, 0].map((opt) => (
-          <label
-            key={opt}
-            className={`cursor-pointer p-3 rounded-xl border text-sm transition text-center 
-            ${value === opt
-              ? "bg-green-500 text-white border-green-600"
-              : "bg-gray-100 text-black border-gray-300"}`}
-          >
-            <input
-              type="radio"
-              name={`q-${index}`}
-              className="hidden"
-              onChange={() => onChange(opt)}
-            />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+        {[5, 4, 3, 2, 1, 0].map((opt) => {
+          const isSelected = value === opt;
+          return (
+            <label
+              key={opt}
+              className={`cursor-pointer p-4 rounded-xl border-2 text-sm font-medium transition-all duration-300 text-center flex items-center justify-center relative overflow-hidden
+              ${isSelected
+                ? "bg-teal-50 text-teal-800 border-teal-500 shadow-md shadow-teal-500/20 scale-[1.02]"
+                : "bg-white/50 text-slate-600 border-transparent hover:bg-white hover:border-teal-200 hover:shadow-sm"}`}
+            >
+              <input
+                type="radio"
+                name={`q-${index}`}
+                className="hidden"
+                onChange={() => onChange(opt)}
+              />
 
-            {opt === 5 && "All of the time"}
-            {opt === 4 && "Most of the time"}
-            {opt === 3 && "More than half of the time"}
-            {opt === 2 && "Less than half of the time"}
-            {opt === 1 && "Some of the time"}
-            {opt === 0 && "At no time"}
-          </label>
-        ))}
+              <span className="relative z-10 flex">
+                {opt === 5 && "All of the time"}
+                {opt === 4 && "Most of the time"}
+                {opt === 3 && "More than half of the time"}
+                {opt === 2 && "Less than half of the time"}
+                {opt === 1 && "Some of the time"}
+                {opt === 0 && "At no time"}
+              </span>
+              
+              {isSelected && (
+                <span className="absolute inset-0 bg-teal-500 opacity-5"></span>
+              )}
+            </label>
+          );
+        })}
       </div>
     </div>
   );

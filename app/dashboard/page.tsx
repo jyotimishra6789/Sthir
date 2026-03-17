@@ -18,7 +18,7 @@ export default function DashboardPage() {
       return {
         label: "Light Mental Load 🟢",
         message: "You seem mentally relaxed today. Keep this balance.",
-        color: "bg-green-100 text-green-800",
+        color: "bg-emerald-100/80 text-emerald-800 border-emerald-200 shadow-emerald-500/10",
       };
     }
 
@@ -26,14 +26,14 @@ export default function DashboardPage() {
       return {
         label: "Moderate Mental Load 🟡",
         message: "You’re handling things, but some mental pressure is present.",
-        color: "bg-yellow-100 text-yellow-800",
+        color: "bg-amber-100/80 text-amber-800 border-amber-200 shadow-amber-500/10",
       };
     }
 
     return {
       label: "Heavy Mental Load 🔴",
       message: "Your mind seems overloaded today. Rest and slow down if you can.",
-      color: "bg-red-100 text-red-800",
+      color: "bg-rose-100/80 text-rose-800 border-rose-200 shadow-rose-500/10",
     };
   };
 
@@ -78,28 +78,30 @@ export default function DashboardPage() {
 
   if (!answers) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 p-6">
-        <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-xl border border-black">
-          <h1 className="text-3xl font-bold text-black mb-4">
+      <div className="bg-transparent p-6 relative w-full">
+        <div className="max-w-2xl mx-auto glass-card p-10 text-center animate-scale-up">
+          <h1 className="text-3xl font-extrabold text-slate-800 mb-4 tracking-tight">
             Detailed Wellness Report
           </h1>
 
-          <p className="text-red-600 font-semibold">
+          <div className="bg-red-50 text-red-600 font-medium py-3 px-6 rounded-xl border border-red-100 mb-8 inline-block">
             No test data found. Please complete the wellness test first.
-          </p>
+          </div>
 
-          <a
-            href="/checkin"
-            className="inline-block mt-4 bg-green-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-700 transition"
-          >
-            Go to Test
-          </a>
+          <div>
+            <a
+              href="/checkin"
+              className="inline-block bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-8 py-3.5 rounded-full font-medium hover:shadow-lg hover:shadow-teal-500/30 transition-all duration-300 transform hover:-translate-y-1"
+            >
+              Take Assessment
+            </a>
+          </div>
 
-          <div className="bg-white rounded-2xl shadow-md border border-black p-6 mt-6">
-            <h2 className="text-xl font-semibold text-black mb-2">
-              Daily Mood Tip 🌿
+          <div className="glass-card bg-white/60 p-6 mt-10 text-left">
+            <h2 className="text-xl font-bold text-slate-800 mb-2 flex items-center">
+              <span className="text-2xl mr-2">🌿</span> Daily Mood Tip
             </h2>
-            <p className="text-black text-lg">{fact}</p>
+            <p className="text-slate-600 leading-relaxed font-light">{fact}</p>
           </div>
         </div>
       </div>
@@ -107,88 +109,95 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 p-6">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <h1 className="text-3xl font-bold text-black text-center">
+    <div className="bg-transparent p-4 sm:p-8 relative">
+      <div className="max-w-4xl mx-auto space-y-8 relative z-10">
+        <h1 className="text-4xl font-extrabold text-slate-800 tracking-tight text-center mb-10 animate-scale-up">
           Detailed Wellness Report
         </h1>
 
-        {/* Summary */}
-        <div className="bg-white rounded-2xl shadow-md border border-black p-6">
-          <h2 className="text-2xl font-semibold text-black mb-2">
-            Today&apos;s Summary
-          </h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Summary */}
+          <div className="glass-card p-8 animate-scale-up" style={{ animationDelay: '50ms' }}>
+            <h2 className="text-2xl font-bold text-slate-800 mb-4 border-b border-slate-200/60 pb-3">
+              Today&apos;s Summary
+            </h2>
 
+            {score !== null && (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center text-lg">
+                  <span className="text-slate-600 font-medium">Total Score</span>
+                  <span className="font-bold text-teal-600 text-2xl">{score} <span className="text-sm text-slate-400 font-normal">/ 50</span></span>
+                </div>
+
+                <div className="flex justify-between items-center text-md">
+                  <span className="text-slate-600 font-medium">Status</span>
+                  <span className="font-medium text-slate-800 bg-white px-3 py-1 rounded-full shadow-sm">{getStatus(score)}</span>
+                </div>
+              </div>
+            )}
+
+            {mood && (
+              <div className="mt-6 pt-6 border-t border-slate-200/60 flex items-center justify-between">
+                <span className="text-slate-600 font-medium text-lg">Logged Mood</span>
+                <span className="text-4xl bg-white p-2 rounded-2xl shadow-sm hover:scale-110 transition-transform duration-300">{mood}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Mental Load Meter */}
           {score !== null && (
-            <>
-              <p className="text-lg text-black">
-                Total Score:{" "}
-                <span className="font-bold text-green-600">{score}</span> / 50
+            <div
+              className={`rounded-3xl border p-8 shadow-lg backdrop-blur-md transition-all duration-500 hover:shadow-xl animate-scale-up flex flex-col justify-center ${getMentalLoad(score).color}`}
+              style={{ animationDelay: '100ms' }}
+            >
+              <h2 className="text-xl font-bold mb-3 opacity-90">
+                Mental Load Meter
+              </h2>
+              <p className="text-2xl font-extrabold mb-3 tracking-tight">
+                {getMentalLoad(score).label}
               </p>
-
-              <p className="text-md text-black mt-2">
-                {getStatus(score)}
+              <p className="text-md opacity-90 leading-relaxed font-medium">
+                {getMentalLoad(score).message}
               </p>
-            </>
-          )}
-
-          {mood && (
-            <p className="text-lg text-black mt-2">
-              Today&apos;s Mood: <span className="text-3xl">{mood}</span>
-            </p>
+            </div>
           )}
         </div>
 
-        {/* Mental Load Meter */}
-        {score !== null && (
-          <div
-            className={`rounded-2xl shadow-md border border-black p-6 ${getMentalLoad(score).color}`}
-          >
-            <h2 className="text-xl font-semibold mb-2 text-black">
-              Mental Load Meter
-            </h2>
-            <p className="text-lg font-bold">
-              {getMentalLoad(score).label}
-            </p>
-            <p className="mt-2">
-              {getMentalLoad(score).message}
-            </p>
-          </div>
-        )}
-
         {/* Chart */}
-        <MoodChart answers={answers} />
+        <div className="animate-scale-up" style={{ animationDelay: '150ms' }}>
+          <MoodChart answers={answers} />
+        </div>
+
+        {/* Fun Fact */}
+        <div className="glass-card p-8 animate-scale-up" style={{ animationDelay: '250ms' }}>
+          <h2 className="text-xl font-bold text-slate-800 mb-3 flex items-center">
+            <span className="text-2xl mr-3">🌿</span> Daily Mood Tip
+          </h2>
+          <p className="text-slate-600 text-lg leading-relaxed font-light">{fact}</p>
+        </div>
 
         {/* Buttons */}
-        <div className="flex flex-wrap gap-4 mt-4">
+        <div className="flex flex-wrap gap-4 mt-8 justify-center animate-scale-up" style={{ animationDelay: '300ms' }}>
           <a
             href="/advice"
-            className="bg-purple-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-purple-700 transition"
+            className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-8 py-3.5 rounded-full font-semibold shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center flex-1 sm:flex-none"
           >
             View AI Advice
           </a>
 
           <a
             href="/checkin"
-            className="bg-gray-800 text-white px-6 py-3 rounded-xl font-medium hover:bg-gray-900 transition"
+            className="bg-slate-800 text-white px-8 py-3.5 rounded-full font-semibold shadow-md hover:shadow-lg hover:bg-slate-900 hover:-translate-y-1 transition-all duration-300 text-center flex-1 sm:flex-none"
           >
             Retake Test
           </a>
 
           <a
             href="/"
-            className="bg-white border border-black text-black px-6 py-3 rounded-xl font-medium hover:bg-gray-100 transition"
+            className="bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-700 px-8 py-3.5 rounded-full font-semibold shadow-sm hover:bg-white hover:shadow-md hover:-translate-y-1 transition-all duration-300 text-center w-full sm:w-auto"
           >
             Back to Home
           </a>
-        </div>
-
-        {/* Fun Fact */}
-        <div className="bg-white rounded-2xl shadow-md border border-black p-6 mt-6">
-          <h2 className="text-xl font-semibold text-black mb-2">
-            Daily Mood Tip 🌿
-          </h2>
-          <p className="text-black text-lg">{fact}</p>
         </div>
       </div>
     </div>

@@ -29,28 +29,44 @@ export default function CheckinPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 p-6">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-6 text-black">
-          Daily Wellness Test
-        </h1>
+    <div className="min-h-screen relative overflow-hidden bg-[#f0f9ff] py-12 px-4 sm:px-6">
+      {/* Dynamic Background Gradients */}
+      <div className="absolute top-0 right-0 w-[40%] h-[40%] rounded-full bg-teal-200 mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse-soft"></div>
+      <div className="absolute bottom-0 left-0 w-[40%] h-[40%] rounded-full bg-purple-200 mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse-soft" style={{ animationDelay: '2s' }}></div>
 
-        {questions.map((q, i) => (
-          <QuestionCard
-            key={i}
-            question={q}
-            index={i}
-            value={answers[i]}
-            onChange={(val) => updateAnswer(i, val)}
-          />
-        ))}
+      <div className="max-w-3xl mx-auto relative z-10">
+        <div className="text-center mb-10 animate-scale-up">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-800 mb-4 tracking-tight">
+            Daily Wellness <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-500">Check-in</span>
+          </h1>
+          <p className="text-slate-600 text-lg">Take a moment to reflect on how you've been feeling.</p>
+        </div>
 
-        <button
-          onClick={handleSubmit}
-          className="w-full bg-green-600 text-white py-3 rounded-xl text-lg font-semibold mt-6"
-        >
-          Submit Test
-        </button>
+        <div className="space-y-6">
+          {questions.map((q, i) => (
+            <div key={i} className="animate-scale-up" style={{ animationDelay: `${(i % 5) * 100}ms` }}>
+              <QuestionCard
+                question={q}
+                index={i}
+                value={answers[i]}
+                onChange={(val) => updateAnswer(i, val)}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 mb-8 animate-scale-up" style={{ animationDelay: '500ms' }}>
+          <button
+            onClick={handleSubmit}
+            className="w-full relative group overflow-hidden px-8 py-4 rounded-2xl bg-slate-900 text-white font-bold text-lg hover:shadow-xl hover:shadow-teal-500/30 transition-all duration-300 border border-slate-700 hover:border-slate-500"
+          >
+            <span className="relative z-10 flex items-center justify-center">
+              Complete Assessment
+              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </span>
+            <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-teal-500 to-emerald-500 scale-x-0 group-hover:scale-x-100 transform origin-left transition-transform duration-500 ease-out z-0"></div>
+          </button>
+        </div>
       </div>
     </div>
   );
