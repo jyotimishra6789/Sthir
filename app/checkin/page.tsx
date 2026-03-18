@@ -2,9 +2,15 @@
 import { useState } from "react";
 import { questions } from "@/lib/questions";
 import QuestionCard from "@/components/QuestionCard";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function CheckinPage() {
   const [answers, setAnswers] = useState<number[]>(Array(10).fill(null));
+  const router = useRouter();
+
+  const answeredCount = answers.filter((a) => a !== null).length;
+  const progressPercent = (answeredCount / 10) * 100;
 
   const updateAnswer = (index: number, value: number) => {
     const newAnswers = [...answers];
@@ -14,7 +20,9 @@ export default function CheckinPage() {
 
   const handleSubmit = () => {
     if (answers.includes(null as any)) {
-      alert("Please answer all questions");
+      toast.error("Please answer all questions before proceeding.", {
+        icon: '📝',
+      });
       return;
     }
 
@@ -25,7 +33,7 @@ export default function CheckinPage() {
     localStorage.setItem("sthir-answers", JSON.stringify(answers));
 
     // REDIRECT
-    window.location.href = "/advice";
+    router.push("/advice");
   };
 
   return (
@@ -35,11 +43,24 @@ export default function CheckinPage() {
       <div className="absolute bottom-0 left-0 w-[40%] h-[40%] rounded-full bg-purple-200 mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse-soft" style={{ animationDelay: '2s' }}></div>
 
       <div className="max-w-3xl mx-auto relative z-10">
-        <div className="text-center mb-10 animate-scale-up">
+        <div className="text-center mb-8 animate-scale-up">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-800 mb-4 tracking-tight">
             Daily Wellness <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-500">Check-in</span>
           </h1>
-          <p className="text-slate-600 text-lg">Take a moment to reflect on how you've been feeling.</p>
+          <p className="text-slate-600 text-lg mb-8">Take a moment to reflect on how you've been feeling.</p>
+          
+          <div className="max-w-xl mx-auto">
+            <div className="mb-2 flex justify-between items-center text-sm font-medium text-slate-500">
+              <span>Your Progress</span>
+              <span>{answeredCount} / 10</span>
+            </div>
+            <div className="w-full bg-white/60 backdrop-blur-sm rounded-full h-3 border border-slate-200 overflow-hidden shadow-inner">
+              <div 
+                className="bg-gradient-to-r from-teal-400 to-emerald-500 h-full rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="space-y-6">

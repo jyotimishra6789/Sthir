@@ -2,7 +2,8 @@ import WellnessCard from "@/components/WellnessCard";
 // Removed direct import of DashboardPage since it breaks logic/routing if used directly,
 // but the current code does include it, so I'll keep it with some visual separation if needed.
 // It seems better to just have the cards and link to the dashboard properly but let's maintain existing functionality.
-import DashboardPage from "./dashboard/page";
+// Using the shared component instead of importing the page directly
+import DashboardContent from "@/components/DashboardContent";
 import MoodSelector from "@/components/MoodSelector";
 
 export default function Home() {
@@ -28,9 +29,10 @@ export default function Home() {
           <WellnessCard />
         </div>
         
-        {/* Separator before Dashboard component if we're embedding it directly */}
-        <div className="mt-20 pt-10 border-t border-slate-200/60">
-          <DashboardPage />
+        {/* Separator before Dashboard component */}
+        <div className="mt-20 pt-10 border-t border-slate-200/60 w-full overflow-hidden relative">
+          <div className="absolute inset-0 bg-white/30 backdrop-blur-md rounded-3xl -z-10 mt-10"></div>
+          <DashboardContent />
         </div>
       </div>
     </div>

@@ -6,8 +6,10 @@ export default function AdvicePage() {
   const [score, setScore] = useState<number | null>(null);
   const [advice, setAdvice] = useState("");
   const [loading, setLoading] = useState(true);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    setHydrated(true);
     const storedScore = localStorage.getItem("sthir-score");
     const storedAnswers = localStorage.getItem("sthir-answers");
 
@@ -71,7 +73,11 @@ export default function AdvicePage() {
             Your Personalized Advice
           </h1>
 
-          {score !== null ? (
+          {!hydrated ? (
+            <div className="flex justify-center mb-8">
+              <div className="w-8 h-8 border-4 border-indigo-200 border-t-indigo-500 rounded-full animate-spin"></div>
+            </div>
+          ) : score !== null ? (
             <div className="inline-block bg-white/60 backdrop-blur-sm border border-slate-200 py-3 px-6 rounded-2xl mb-8 shadow-sm">
               <p className="text-lg font-medium text-slate-700">
                 Wellness Score: <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-emerald-600 ml-2">{score}</span> <span className="text-sm font-normal text-slate-400">/ 50</span>

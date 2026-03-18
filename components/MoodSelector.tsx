@@ -52,7 +52,8 @@ export default function MoodSelector({ onMoodChange }: MoodSelectorProps) {
             <button
               key={mood.emoji}
               onClick={() => handleSelect(mood.emoji)}
-              className={`group flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl transition-all duration-300 transform outline-none
+              aria-label={`Select ${mood.label} mood`}
+              className={`group flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl transition-all duration-300 transform outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-400
                 ${
                   isSelected
                     ? `bg-gradient-to-br ${mood.color} shadow-lg ${mood.shadow} scale-110 -translate-y-2`
