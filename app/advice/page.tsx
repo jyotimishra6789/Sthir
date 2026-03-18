@@ -5,48 +5,57 @@ import { useEffect, useState } from "react";
 export default function AdvicePage() {
   const [score, setScore] = useState<number | null>(null);
   const [advice, setAdvice] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedScore = localStorage.getItem("sthir-score");
+    const storedAnswers = localStorage.getItem("sthir-answers");
 
-    // Agar score nahi mila ya NaN hai → show nothing
     if (!storedScore || isNaN(parseInt(storedScore))) {
       setScore(null);
+      setLoading(false);
       return;
     }
 
     const s = parseInt(storedScore);
     setScore(s);
-    generateAdvice(s);
+    
+    // Parse answers if available
+    let answers = null;
+    try {
+      if (storedAnswers) answers = JSON.parse(storedAnswers);
+    } catch(e) { /* ignore */ }
+
+    fetchRealAdvice(s, answers);
   }, []);
 
-  const generateAdvice = (s: number) => {
-    if (s >= 41) {
-      setAdvice(
-        "Your mental well-being is excellent! Keep doing what brings you peace and joy."
-      );
-    } else if (s >= 31) {
-      setAdvice(
-        "You’re doing well! A little mindfulness or a relaxing activity can make your day even better."
-      );
-    } else if (s >= 21) {
-      setAdvice(
-        "Your well-being is moderate. Try taking small breaks, hydrating well, or talking to someone close."
-      );
-    } else if (s >= 11) {
-      setAdvice(
-        "Your score indicates low well-being. Slow down, rest properly, and be kind to yourself today."
-      );
-    } else {
-      setAdvice(
-        "You might be feeling very low. Please talk to a close friend, family member, or a professional. You are not alone."
-      );
+  const fetchRealAdvice = async (scoreLevel: number, rawAnswers: any) => {
+    try {
+      const response = await fetch('/api/advice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ score: scoreLevel, answers: rawAnswers }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch advice');
+      }
+
+      const data = await response.json();
+      setAdvice(data.advice);
+    } catch (error) {
+      console.error(error);
+      // Fallback advice if the API fails or no API key is specified yet.
+      setAdvice("It looks like we're having trouble reaching the AI right now. Remember to take a few deep breaths and be kind to yourself today.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#f0f9ff] py-12 px-4 flex items-center justify-center">
-      {/* Background elements */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-indigo-200 mix-blend-multiply filter blur-[100px] opacity-50 animate-float"></div>
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-purple-200 mix-blend-multiply filter blur-[100px] opacity-50 animate-float" style={{ animationDelay: '2s' }}></div>
 
@@ -62,7 +71,6 @@ export default function AdvicePage() {
             Your Personalized Advice
           </h1>
 
-          {/* -------- SCORE SECTION -------- */}
           {score !== null ? (
             <div className="inline-block bg-white/60 backdrop-blur-sm border border-slate-200 py-3 px-6 rounded-2xl mb-8 shadow-sm">
               <p className="text-lg font-medium text-slate-700">
@@ -75,17 +83,24 @@ export default function AdvicePage() {
             </div>
           )}
 
-          {/* -------- ADVICE TEXT -------- */}
           {score !== null && (
-            <div className="bg-white/40 border border-white/60 rounded-2xl p-6 sm:p-8 mb-10 shadow-sm backdrop-blur-sm text-left relative">
+            <div className="bg-white/40 border border-white/60 rounded-2xl p-6 sm:p-8 mb-10 shadow-sm backdrop-blur-sm text-left relative min-h-[150px] flex items-center justify-center">
               <div className="absolute -top-3 -left-3 text-4xl opacity-20">"</div>
-              <p className="text-slate-700 text-xl leading-relaxed font-medium relative z-10">{advice}</p>
+              
+              {loading ? (
+                <div className="flex flex-col items-center">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-400 to-purple-500 animate-ping mb-4 shadow-lg shadow-indigo-500/50"></div>
+                  <p className="text-indigo-500 font-medium animate-pulse text-sm">Consulting AI Therapist...</p>
+                </div>
+              ) : (
+                <p className="text-slate-700 text-xl leading-relaxed font-medium relative z-10 animate-scale-up">{advice}</p>
+              )}
+              
               <div className="absolute -bottom-5 -right-3 text-4xl opacity-20 rotate-180">"</div>
             </div>
           )}
 
-          {/* -------- BUTTON -------- */}
-          <div className="mt-2">
+          <div className="mt-2 text-center w-full flex justify-center">
             <a
               href="/dashboard"
               className="inline-flex items-center justify-center w-full sm:w-auto relative group overflow-hidden px-10 py-4 rounded-full bg-slate-900 text-white font-semibold hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-300 border border-slate-700 hover:border-slate-500"
