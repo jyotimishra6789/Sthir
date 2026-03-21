@@ -122,7 +122,7 @@ export default function AdvicePage() {
               />
               <button
                 type="submit"
-                disabled={isLoading || !input.trim() || !hydrated}
+                disabled={isLoading || !input?.trim() || !hydrated}
                 className="absolute right-2 top-2 bottom-2 w-10 h-10 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full flex items-center justify-center transition-colors disabled:opacity-50 disabled:hover:bg-indigo-600"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-1">
