@@ -14,7 +14,11 @@ export async function GET() {
 
     return NextResponse.json({ tip: text.trim() });
   } catch (error: any) {
-    console.error('Error generating tip:', error);
+    if (error?.message?.includes('key') || error?.message?.includes('API')) {
+      console.warn('⚠️ AI Tip generation failed: Missing or invalid API Key. Using fallback tip.');
+    } else {
+      console.error('Error generating tip:', error.message || error);
+    }
     // Provide a fallback tip if the API fails or if there's no API key
     return NextResponse.json(
       { error: 'Failed to generate daily tip.', tip: 'Take a deep breath and stay hydrated today (AI offline).' },
