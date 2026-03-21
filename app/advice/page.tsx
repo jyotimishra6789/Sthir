@@ -2,7 +2,7 @@
 
 
 import { useEffect, useState, useRef } from "react";
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import AdviceCard from "@/components/AdviceCard";
 
 export default function AdvicePage() {
