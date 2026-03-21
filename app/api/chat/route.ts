@@ -35,7 +35,7 @@ Rules:
       system: systemPrompt,
     });
 
-    return result.toDataStreamResponse();
+    return (result as any).toDataStreamResponse();
   } catch (error: any) {
     console.error('Error in chat API:', error);
     
