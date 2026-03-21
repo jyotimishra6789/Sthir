@@ -17,6 +17,7 @@ interface MoodSelectorProps {
 export default function MoodSelector({ onMoodChange }: MoodSelectorProps) {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -30,7 +31,13 @@ export default function MoodSelector({ onMoodChange }: MoodSelectorProps) {
   const handleSelect = (emoji: string) => {
     setSelectedMood(emoji);
     localStorage.setItem("sthir-mood", emoji);
+    setShowSuccess(true);
     onMoodChange?.(emoji);
+    
+    // Hide the success message after 3 seconds so it's not permanently stuck
+    setTimeout(() => {
+      setShowSuccess(false);
+    }, 3000);
   };
 
   return (
@@ -72,7 +79,7 @@ export default function MoodSelector({ onMoodChange }: MoodSelectorProps) {
         })}
       </div>
 
-      {selectedMood && (
+      {showSuccess && (
         <div className="mt-8 text-center animate-scale-up">
           <span className="inline-flex items-center px-4 py-2 rounded-full bg-emerald-100/80 text-emerald-700 text-sm font-semibold border border-emerald-200 shadow-sm backdrop-blur-sm">
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>

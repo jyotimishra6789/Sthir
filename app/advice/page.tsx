@@ -89,7 +89,7 @@ export default function AdvicePage() {
                       : 'bg-white border border-indigo-50 text-slate-700 rounded-tl-sm'
                   }`}>
                     {/* Simple formatting for markdown-like text */}
-                    {m.content.split('\n').map((line, i) => (
+                    {typeof (m as any).content === 'string' && ((m as any).content as string).split('\n').map((line: string, i: number) => (
                       <p key={i} className={`mb-1 last:mb-0 ${m.role === 'user' ? 'text-white/90' : 'text-slate-600'}`}>
                         {line}
                       </p>
