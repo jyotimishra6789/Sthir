@@ -14,7 +14,7 @@ export default function DashboardContent() {
   const getMentalLoad = (score: number) => {
     const avg = score / 10;
 
-    if (avg <= 1.5) {
+    if (avg >= 3.5) {
       return {
         label: "Light Mental Load 🟢",
         message: "You seem mentally relaxed today. Keep this balance.",
@@ -22,7 +22,7 @@ export default function DashboardContent() {
       };
     }
 
-    if (avg <= 3.5) {
+    if (avg >= 1.5) {
       return {
         label: "Moderate Mental Load 🟡",
         message: "You’re handling things, but some mental pressure is present.",
