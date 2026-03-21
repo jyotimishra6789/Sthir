@@ -122,36 +122,60 @@ export default function DashboardContent() {
 
   return (
     <div className="bg-transparent p-4 sm:p-8 relative">
-      <div className="max-w-4xl mx-auto space-y-8 relative z-10">
-        <h1 className="text-4xl font-extrabold text-slate-800 tracking-tight text-center mb-10 animate-scale-up">
-          Detailed Wellness Report
-        </h1>
+      <div className="max-w-4xl mx-auto space-y-10 relative z-10">
+        
+        {/* Header Section */}
+        <div className="flex flex-col items-center justify-center mb-12 animate-scale-up text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-[2rem] bg-gradient-to-tr from-teal-400 via-emerald-500 to-green-400 text-white shadow-xl shadow-teal-500/30 mb-6 transform hover:rotate-12 transition-transform duration-500">
+             <span className="text-3xl">🌿</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black text-slate-800 tracking-tight drop-shadow-sm">
+            Wellness <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-500">Report</span>
+          </h1>
+          <p className="text-slate-500 mt-4 font-medium text-lg max-w-lg mx-auto">
+            Your personalized insights to help you reflect, breathe, and cultivate balance today.
+          </p>
+        </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Summary */}
-          <div className="glass-card p-8 animate-scale-up" style={{ animationDelay: '50ms' }}>
-            <h2 className="text-2xl font-bold text-slate-800 mb-4 border-b border-slate-200/60 pb-3">
-              Today&apos;s Summary
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Summary Card */}
+          <div className="relative overflow-hidden glass-card p-8 animate-scale-up border border-white/60 shadow-xl bg-white/50 group" style={{ animationDelay: '50ms' }}>
+            {/* Background decorative blob */}
+            <div className="absolute -right-16 -top-16 w-48 h-48 bg-teal-300/40 rounded-full mix-blend-multiply filter blur-3xl opacity-70 group-hover:bg-teal-300/60 transition-colors duration-700"></div>
+            
+            <h2 className="text-2xl font-extrabold text-slate-800 mb-6 flex items-center relative z-10">
+              Today's Overview
             </h2>
 
             {score !== null && (
-              <div className="space-y-4">
-                <div className="flex justify-between items-center text-lg">
-                  <span className="text-slate-600 font-medium">Total Score</span>
-                  <span className="font-bold text-teal-600 text-2xl">{score} <span className="text-sm text-slate-400 font-normal">/ 50</span></span>
+              <div className="space-y-4 relative z-10">
+                <div className="bg-white/70 backdrop-blur-md rounded-2xl p-5 border border-white/80 shadow-sm flex justify-between items-center transition-transform hover:scale-[1.02] duration-300">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-100 to-emerald-100 flex items-center justify-center text-teal-600 shadow-inner">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <span className="text-slate-700 font-bold">Total Score</span>
+                  </div>
+                  <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500 text-3xl drop-shadow-sm">
+                    {score} <span className="text-sm text-slate-400 font-semibold align-middle">/ 50</span>
+                  </span>
                 </div>
 
-                <div className="flex justify-between items-center text-md">
-                  <span className="text-slate-600 font-medium">Status</span>
-                  <span className="font-medium text-slate-800 bg-white px-3 py-1 rounded-full shadow-sm">{getStatus(score)}</span>
+                <div className="bg-white/70 backdrop-blur-md rounded-2xl p-5 border border-white/80 shadow-sm flex justify-between items-center transition-transform hover:scale-[1.02] duration-300">
+                  <span className="text-slate-700 font-bold ml-1">Status</span>
+                  <span className="font-bold text-slate-800 bg-white/90 border border-slate-100 px-4 py-2 rounded-xl shadow-sm text-sm">
+                    {getStatus(score)}
+                  </span>
                 </div>
               </div>
             )}
 
             {mood && (
-              <div className="mt-6 pt-6 border-t border-slate-200/60 flex items-center justify-between">
-                <span className="text-slate-600 font-medium text-lg">Logged Mood</span>
-                <span className="text-4xl bg-white p-2 rounded-2xl shadow-sm hover:scale-110 transition-transform duration-300">{mood}</span>
+              <div className="mt-6 pt-6 border-t border-slate-200/50 flex items-center justify-between relative z-10">
+                <span className="text-slate-700 font-bold ml-1 text-lg">Logged Mood</span>
+                <span className="text-4xl bg-white/90 border border-slate-100 p-3 rounded-[1.5rem] shadow-sm hover:scale-110 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                  {mood}
+                </span>
               </div>
             )}
           </div>
@@ -159,18 +183,23 @@ export default function DashboardContent() {
           {/* Mental Load Meter */}
           {score !== null && (
             <div
-              className={`rounded-3xl border p-8 shadow-lg backdrop-blur-md transition-all duration-500 hover:shadow-xl animate-scale-up flex flex-col justify-center ${getMentalLoad(score).color}`}
+              className={`relative overflow-hidden rounded-[2rem] border p-8 shadow-xl backdrop-blur-md transition-all duration-500 flex flex-col justify-center transform hover:-translate-y-1 ${getMentalLoad(score).color.replace('border-', 'border-opacity-50 border-')} bg-opacity-90`}
               style={{ animationDelay: '100ms' }}
             >
-              <h2 className="text-xl font-bold mb-3 opacity-90">
-                Mental Load Meter
-              </h2>
-              <p className="text-2xl font-extrabold mb-3 tracking-tight">
-                {getMentalLoad(score).label}
-              </p>
-              <p className="text-md opacity-90 leading-relaxed font-medium">
-                {getMentalLoad(score).message}
-              </p>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/30 rounded-full mix-blend-overlay filter blur-2xl opacity-60"></div>
+              
+              <div className="relative z-10">
+                <h2 className="text-sm uppercase tracking-widest font-bold mb-3 opacity-80 flex items-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+                  Mental Load
+                </h2>
+                <p className="text-3xl font-black mb-3 tracking-tight drop-shadow-sm">
+                  {getMentalLoad(score).label}
+                </p>
+                <p className="text-base opacity-95 leading-relaxed font-semibold max-w-[90%]">
+                  {getMentalLoad(score).message}
+                </p>
+              </div>
             </div>
           )}
         </div>
@@ -180,33 +209,43 @@ export default function DashboardContent() {
           <MoodChart answers={answers} />
         </div>
 
-        {/* Fun Fact */}
-        <div className="glass-card p-8 animate-scale-up" style={{ animationDelay: '250ms' }}>
-          <h2 className="text-xl font-bold text-slate-800 mb-3 flex items-center">
-            <span className="text-2xl mr-3">🌿</span> Daily Mood Tip
-          </h2>
-          <p className="text-slate-600 text-lg leading-relaxed font-light">{fact}</p>
+        {/* Fun Fact / AI Tip */}
+        <div className="relative overflow-hidden w-full rounded-[2rem] p-[2px] animate-scale-up shadow-xl shadow-indigo-500/10 group" style={{ animationDelay: '250ms' }}>
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-30 group-hover:opacity-50 transition-opacity duration-500 animate-pulse-soft"></div>
+          <div className="bg-white/90 backdrop-blur-xl rounded-[calc(2rem-2px)] p-8 h-full relative z-10">
+            <h2 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-5 flex items-center">
+              <span className="text-2xl mr-3 filter drop-shadow-sm animate-bounce" style={{ animationDuration: '3s' }}>✨</span> 
+              AI Daily Insight
+            </h2>
+            <p className="text-slate-700 text-lg leading-relaxed font-medium italic border-l-4 border-indigo-300 pl-5 py-2">
+              {fact}
+            </p>
+          </div>
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-wrap gap-4 mt-8 justify-center animate-scale-up" style={{ animationDelay: '300ms' }}>
+        <div className="flex flex-col sm:flex-row flex-wrap gap-4 mt-12 justify-center animate-scale-up" style={{ animationDelay: '300ms' }}>
           <a
             href="/advice"
-            className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-8 py-3.5 rounded-full font-semibold shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center flex-1 sm:flex-none"
+            className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-full font-bold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all duration-300 text-center flex-1 sm:flex-none"
           >
-            View AI Advice
+            <span className="relative z-10 flex items-center justify-center">
+              Chat with AI
+              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </span>
+            <div className="absolute inset-0 block bg-gradient-to-r from-purple-600 to-pink-600 scale-x-0 group-hover:scale-x-100 transform origin-left transition-transform duration-500 ease-out z-0"></div>
           </a>
 
           <a
             href="/checkin"
-            className="bg-slate-800 text-white px-8 py-3.5 rounded-full font-semibold shadow-md hover:shadow-lg hover:bg-slate-900 hover:-translate-y-1 transition-all duration-300 text-center flex-1 sm:flex-none"
+            className="bg-slate-800 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-xl hover:bg-slate-900 border border-slate-700 hover:border-slate-500 hover:-translate-y-1 transition-all duration-300 text-center flex-1 sm:flex-none"
           >
             Retake Test
           </a>
 
           <a
             href="/"
-            className="bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-700 px-8 py-3.5 rounded-full font-semibold shadow-sm hover:bg-white hover:shadow-md hover:-translate-y-1 transition-all duration-300 text-center w-full sm:w-auto"
+            className="bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-700 px-8 py-4 rounded-full font-bold shadow-sm hover:bg-white hover:shadow-md hover:-translate-y-1 transition-all duration-300 text-center flex-1 sm:flex-none"
           >
             Back to Home
           </a>
