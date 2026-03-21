@@ -30,7 +30,7 @@ Rules:
 
     // streamText handles the interaction with the model and streaming the response
     const result = streamText({
-      model: google('gemini-2.5-flash'), // or whichever model is best suited
+      model: google('gemini-1.5-flash'), // Updated to 1.5-flash for better compatibility
       messages,
       system: systemPrompt,
     });
@@ -38,8 +38,15 @@ Rules:
     return result.toDataStreamResponse();
   } catch (error: any) {
     console.error('Error in chat API:', error);
+    
+    // Check if it's likely an API Key issue
+    let errorMsg = 'Failed to process chat. Please try again later.';
+    if (error.message?.includes('API key') || error.message?.includes('key')) {
+      errorMsg = 'AI API key is missing or invalid. Please check your .env.local file.';
+    }
+
     return NextResponse.json(
-      { error: 'Failed to process chat. Please try again later.' },
+      { error: errorMsg },
       { status: 500 }
     );
   }
