@@ -1,6 +1,6 @@
 "use client";
 
-import { funFacts } from "@/lib/funfacts";
+
 import { useEffect, useState } from "react";
 import MoodChart from "@/components/MoodChart";
 
@@ -8,7 +8,7 @@ export default function DashboardContent() {
   const [mounted, setMounted] = useState(false);
   const [answers, setAnswers] = useState<number[] | null>(null);
   const [score, setScore] = useState<number | null>(null);
-  const [fact, setFact] = useState("");
+  const [fact, setFact] = useState("Generating a unique AI wellness tip for you...");
   const [mood, setMood] = useState<string | null>(null);
 
   const getMentalLoad = (score: number) => {
@@ -69,9 +69,21 @@ export default function DashboardContent() {
       setScore(Number(storedScore));
     }
 
-    const randomFact =
-      funFacts[Math.floor(Math.random() * funFacts.length)];
-    setFact(randomFact);
+    const fetchTip = async () => {
+      try {
+        const res = await fetch('/api/tip');
+        if (res.ok) {
+          const data = await res.json();
+          setFact(data.tip || "Take a moment to breathe deeply today.");
+        } else {
+          setFact("Remember to drink water and take short breaks today.");
+        }
+      } catch (e) {
+        setFact("Focus on one small positive thing today.");
+      }
+    };
+    
+    fetchTip();
   }, []);
 
   if (!mounted) return null;

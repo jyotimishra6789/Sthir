@@ -38,7 +38,9 @@ export default function MoodChart({ answers }: MoodChartProps) {
           <YAxis domain={[0, 5]} tick={{ fill: "#475569", fontSize: 12 }} axisLine={false} tickLine={false} dx={-10} />
           <Tooltip 
             cursor={{ fill: '#f1f5f9', opacity: 0.4 }}
-            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
+            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', backgroundColor: '#ffffff', color: '#475569' }}
+            itemStyle={{ color: '#0f172a', fontWeight: 'bold' }}
+            labelStyle={{ color: '#475569', fontWeight: 'bold', marginBottom: '4px' }}
           />
           <Bar 
             dataKey="score" 
