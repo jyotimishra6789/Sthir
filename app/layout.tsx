@@ -5,6 +5,14 @@ export const metadata = {
   title: "Sthir – Mental Wellness App",
   description:
     "Sthir is a daily mental wellness app to track mood, reflect on emotions, and find balance through mindful check-ins.",
+  manifest: "/manifest.json",
+  themeColor: "#10b981",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Sthir",
+  },
 };
 
 import { Toaster } from "react-hot-toast";
