@@ -90,7 +90,7 @@ export default function DashboardContent() {
 
   if (!answers) {
     return (
-      <div className="bg-transparent p-6 relative w-full">
+      <div className="bg-white p-6 relative w-full min-h-screen">
         <div className="max-w-2xl mx-auto glass-card p-10 text-center animate-scale-up">
           <h1 className="text-3xl font-extrabold text-slate-800 mb-4 tracking-tight">
             Detailed Wellness Report
@@ -109,7 +109,7 @@ export default function DashboardContent() {
             </a>
           </div>
 
-          <div className="glass-card bg-white/60 p-6 mt-10 text-left">
+          <div className="bg-white border border-gray-200 rounded-xl p-6 mt-10 text-left shadow-sm">
             <h2 className="text-xl font-bold text-slate-800 mb-2 flex items-center">
               <span className="text-2xl mr-2">🌿</span> Daily Mood Tip
             </h2>
@@ -121,7 +121,7 @@ export default function DashboardContent() {
   }
 
   return (
-    <div className="bg-transparent p-4 sm:p-8 relative">
+    <div className="bg-white p-4 sm:p-8 relative min-h-screen">
       <div className="max-w-4xl mx-auto space-y-10 relative z-10">
         
         {/* Header Section */}
@@ -209,15 +209,14 @@ export default function DashboardContent() {
           <MoodChart answers={answers} />
         </div>
 
-        {/* Fun Fact / AI Tip */}
-        <div className="relative overflow-hidden w-full rounded-[2rem] p-[2px] animate-scale-up shadow-xl shadow-indigo-500/10 group" style={{ animationDelay: '250ms' }}>
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-30 group-hover:opacity-50 transition-opacity duration-500 animate-pulse-soft"></div>
-          <div className="bg-white/90 backdrop-blur-xl rounded-[calc(2rem-2px)] p-8 h-full relative z-10">
-            <h2 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-5 flex items-center">
-              <span className="text-2xl mr-3 filter drop-shadow-sm animate-bounce" style={{ animationDuration: '3s' }}>✨</span> 
-              AI Daily Insight
-            </h2>
-            <p className="text-slate-700 text-lg leading-relaxed font-medium italic border-l-4 border-indigo-300 pl-5 py-2">
+        {/* AI Daily Insight */}
+        <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-sm animate-scale-up" style={{ animationDelay: '250ms' }}>
+          <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center">
+            <span className="text-2xl mr-3">✨</span>
+            AI Daily Insight
+          </h2>
+          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+            <p className="text-slate-700 text-lg leading-relaxed font-medium">
               {fact}
             </p>
           </div>
