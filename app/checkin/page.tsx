@@ -37,7 +37,7 @@ export default function CheckinPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#f0f9ff] py-12 px-4 sm:px-6">
+    <div className="min-h-screen relative overflow-hidden bg-white py-12 px-4 sm:px-6">
       {/* Dynamic Background Gradients */}
       <div className="absolute top-0 right-0 w-[40%] h-[40%] rounded-full bg-teal-200 mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse-soft"></div>
       <div className="absolute bottom-0 left-0 w-[40%] h-[40%] rounded-full bg-purple-200 mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse-soft" style={{ animationDelay: '2s' }}></div>
@@ -79,7 +79,7 @@ export default function CheckinPage() {
         <div className="mt-10 mb-8 animate-scale-up" style={{ animationDelay: '500ms' }}>
           <button
             onClick={handleSubmit}
-            className="w-full relative group overflow-hidden px-8 py-4 rounded-2xl bg-slate-900 text-white font-bold text-lg hover:shadow-xl hover:shadow-teal-500/30 transition-all duration-300 border border-slate-700 hover:border-slate-500"
+            className="w-full relative group overflow-hidden px-8 py-4 rounded-2xl bg-emerald-500 text-white font-bold text-lg hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 border border-emerald-600 hover:border-emerald-400"
           >
             <span className="relative z-10 flex items-center justify-center">
               Complete Assessment

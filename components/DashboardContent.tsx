@@ -232,7 +232,7 @@ export default function DashboardContent() {
 
           <a
             href="/checkin"
-            className="bg-slate-800 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-xl hover:bg-slate-900 border border-slate-700 hover:border-slate-500 hover:-translate-y-1 transition-all duration-300 text-center flex-1 sm:flex-none"
+            className="bg-emerald-500 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-xl hover:bg-emerald-600 border border-emerald-600 hover:border-emerald-400 hover:-translate-y-1 transition-all duration-300 text-center flex-1 sm:flex-none"
           >
             Retake Test
           </a>

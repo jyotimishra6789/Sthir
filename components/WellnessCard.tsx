@@ -19,7 +19,7 @@ export default function WellnessCard() {
       </p>
 
       <Link href="/checkin" className="w-full sm:w-auto">
-        <button className="relative group overflow-hidden px-8 py-3.5 rounded-full bg-slate-900 text-white font-medium hover:shadow-lg hover:shadow-slate-500/30 transition-all duration-300 w-full sm:w-auto border border-slate-700 hover:border-slate-500">
+        <button className="relative group overflow-hidden px-8 py-3.5 rounded-full bg-emerald-500 text-white font-medium hover:shadow-lg hover:shadow-emerald-500/30 transition-all duration-300 w-full sm:w-auto border border-emerald-600 hover:border-emerald-400">
           <span className="relative z-10">Start Your Assessment</span>
           <div className="absolute inset-0 h-full w-full block bg-gradient-to-r from-teal-500 to-emerald-500 scale-x-0 group-hover:scale-x-100 transform origin-left transition-transform duration-500 ease-out z-0"></div>
         </button>
