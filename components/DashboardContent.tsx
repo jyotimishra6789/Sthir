@@ -139,17 +139,14 @@ export default function DashboardContent() {
 
         <div className="grid md:grid-cols-2 gap-8">
           {/* Summary Card */}
-          <div className="relative overflow-hidden glass-card p-8 animate-scale-up border border-white/60 shadow-xl bg-white/50 group" style={{ animationDelay: '50ms' }}>
-            {/* Background decorative blob */}
-            <div className="absolute -right-16 -top-16 w-48 h-48 bg-teal-300/40 rounded-full mix-blend-multiply filter blur-3xl opacity-70 group-hover:bg-teal-300/60 transition-colors duration-700"></div>
-            
-            <h2 className="text-2xl font-extrabold text-slate-800 mb-6 flex items-center relative z-10">
+          <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-sm animate-scale-up" style={{ animationDelay: '50ms' }}>
+            <h2 className="text-2xl font-extrabold text-slate-800 mb-6 flex items-center">
               Today's Overview
             </h2>
 
             {score !== null && (
-              <div className="space-y-4 relative z-10">
-                <div className="bg-white/70 backdrop-blur-md rounded-2xl p-5 border border-white/80 shadow-sm flex justify-between items-center transition-transform hover:scale-[1.02] duration-300">
+              <div className="space-y-4">
+                <div className="bg-gray-50 rounded-xl p-5 border border-gray-100 flex justify-between items-center transition-transform hover:scale-[1.02] duration-300">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-100 to-emerald-100 flex items-center justify-center text-teal-600 shadow-inner">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -161,9 +158,9 @@ export default function DashboardContent() {
                   </span>
                 </div>
 
-                <div className="bg-white/70 backdrop-blur-md rounded-2xl p-5 border border-white/80 shadow-sm flex justify-between items-center transition-transform hover:scale-[1.02] duration-300">
+                <div className="bg-gray-50 rounded-xl p-5 border border-gray-100 flex justify-between items-center transition-transform hover:scale-[1.02] duration-300">
                   <span className="text-slate-700 font-bold ml-1">Status</span>
-                  <span className="font-bold text-slate-800 bg-white/90 border border-slate-100 px-4 py-2 rounded-xl shadow-sm text-sm">
+                  <span className="font-bold text-slate-800 bg-white border border-slate-100 px-4 py-2 rounded-xl shadow-sm text-sm">
                     {getStatus(score)}
                   </span>
                 </div>
@@ -171,9 +168,9 @@ export default function DashboardContent() {
             )}
 
             {mood && (
-              <div className="mt-6 pt-6 border-t border-slate-200/50 flex items-center justify-between relative z-10">
+              <div className="mt-6 pt-6 border-t border-slate-200/50 flex items-center justify-between">
                 <span className="text-slate-700 font-bold ml-1 text-lg">Logged Mood</span>
-                <span className="text-4xl bg-white/90 border border-slate-100 p-3 rounded-[1.5rem] shadow-sm hover:scale-110 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                <span className="text-4xl bg-white border border-slate-100 p-3 rounded-[1.5rem] shadow-sm hover:scale-110 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
                   {mood}
                 </span>
               </div>
@@ -183,20 +180,18 @@ export default function DashboardContent() {
           {/* Mental Load Meter */}
           {score !== null && (
             <div
-              className={`relative overflow-hidden rounded-[2rem] border p-8 shadow-xl backdrop-blur-md transition-all duration-500 flex flex-col justify-center transform hover:-translate-y-1 ${getMentalLoad(score).color.replace('border-', 'border-opacity-50 border-')} bg-opacity-90`}
+              className={`bg-white border border-gray-200 rounded-xl p-8 shadow-sm flex flex-col justify-center animate-scale-up ${getMentalLoad(score).color.replace('bg-', 'bg-').replace('text-', 'text-').replace('border-', 'border-').replace('shadow-', 'shadow-')} transition-all duration-500`}
               style={{ animationDelay: '100ms' }}
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/30 rounded-full mix-blend-overlay filter blur-2xl opacity-60"></div>
-              
-              <div className="relative z-10">
-                <h2 className="text-sm uppercase tracking-widest font-bold mb-3 opacity-80 flex items-center gap-2">
+              <div className="text-center">
+                <h2 className="text-sm uppercase tracking-widest font-bold mb-3 opacity-80 flex items-center justify-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
                   Mental Load
                 </h2>
                 <p className="text-3xl font-black mb-3 tracking-tight drop-shadow-sm">
                   {getMentalLoad(score).label}
                 </p>
-                <p className="text-base opacity-95 leading-relaxed font-semibold max-w-[90%]">
+                <p className="text-base opacity-95 leading-relaxed font-semibold max-w-[90%] mx-auto">
                   {getMentalLoad(score).message}
                 </p>
               </div>
