@@ -3,6 +3,7 @@ import { google } from '@ai-sdk/google';
 import { NextResponse } from 'next/server';
 
 export const maxDuration = 30;
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
