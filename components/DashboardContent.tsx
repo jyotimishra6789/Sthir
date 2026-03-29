@@ -3,6 +3,8 @@
 
 import { useEffect, useState } from "react";
 import MoodChart from "@/components/MoodChart";
+import HistoryChart from "@/components/HistoryChart";
+import type { HistoryRecord } from "@/components/HistoryChart";
 
 export default function DashboardContent() {
   const [mounted, setMounted] = useState(false);
@@ -10,6 +12,9 @@ export default function DashboardContent() {
   const [score, setScore] = useState<number | null>(null);
   const [fact, setFact] = useState("Generating a unique AI wellness tip for you...");
   const [mood, setMood] = useState<string | null>(null);
+  const [history, setHistory] = useState<HistoryRecord[]>([]);
+  const [streak, setStreak] = useState(0);
+  const [trend, setTrend] = useState<{ diff: number, text: string } | null>(null);
 
   const getMentalLoad = (score: number) => {
     const avg = score / 10;
@@ -67,6 +72,30 @@ export default function DashboardContent() {
 
     if (storedScore && !isNaN(Number(storedScore))) {
       setScore(Number(storedScore));
+    }
+
+    const storedHistory = localStorage.getItem("sthir-history");
+    if (storedHistory) {
+      try {
+        const parsedHistory = JSON.parse(storedHistory);
+        setHistory(parsedHistory);
+        
+        if (parsedHistory.length > 0) {
+           const distinctDays = new Set(parsedHistory.map((r: any) => new Date(r.date).toLocaleDateString()));
+           setStreak(distinctDays.size);
+        }
+
+        if (parsedHistory.length >= 2) {
+           const latest = parsedHistory[parsedHistory.length - 1].score;
+           const previous = parsedHistory[parsedHistory.length - 2].score;
+           const diff = latest - previous;
+           let text = diff > 0 ? "Up" : "Down";
+           if (diff === 0) text = "Same";
+           setTrend({ diff, text });
+        }
+      } catch (err) {
+        console.error("Failed to parse history", err);
+      }
     }
 
     const fetchTip = async () => {
@@ -158,6 +187,27 @@ export default function DashboardContent() {
                   </span>
                 </div>
 
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 flex flex-col justify-center items-center transition-transform hover:scale-[1.02] duration-300">
+                    <span className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Streak 🔥</span>
+                    <span className="font-bold text-slate-800 text-xl">{streak} Days</span>
+                  </div>
+                  
+                  {trend ? (
+                    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 flex flex-col justify-center items-center transition-transform hover:scale-[1.02] duration-300">
+                      <span className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Trend 📈</span>
+                      <span className={`font-bold text-xl ${trend.diff > 0 ? 'text-emerald-500' : trend.diff < 0 ? 'text-amber-500' : 'text-slate-600'}`}>
+                        {trend.diff > 0 ? '+' : ''}{trend.diff} Pts
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 flex flex-col justify-center items-center transition-transform hover:scale-[1.02] duration-300">
+                      <span className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Trend 📈</span>
+                      <span className="font-bold text-slate-400 text-sm">Needs 2 days</span>
+                    </div>
+                  )}
+                </div>
+
                 <div className="bg-gray-50 rounded-xl p-5 border border-gray-100 flex justify-between items-center transition-transform hover:scale-[1.02] duration-300">
                   <span className="text-slate-700 font-bold ml-1">Status</span>
                   <span className="font-bold text-slate-800 bg-white border border-slate-100 px-4 py-2 rounded-xl shadow-sm text-sm">
@@ -199,9 +249,14 @@ export default function DashboardContent() {
           )}
         </div>
 
-        {/* Chart */}
-        <div className="animate-scale-up" style={{ animationDelay: '150ms' }}>
-          <MoodChart answers={answers} />
+        {/* Charts */}
+        <div className="w-full">
+          {history.length > 0 && (
+             <HistoryChart history={history} />
+          )}
+          <div className="animate-scale-up" style={{ animationDelay: '200ms' }}>
+            <MoodChart answers={answers} />
+          </div>
         </div>
 
         {/* AI Daily Insight */}
