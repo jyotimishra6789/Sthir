@@ -33,12 +33,7 @@
   --foreground: #0f172a;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f172a;
-    --foreground: #f8fafc;
-  }
-}
+/* Dark mode disabled completely to enforce Light Mode */
 
 body {
   background: var(--background);

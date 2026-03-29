@@ -4,12 +4,26 @@
 import { useEffect, useState, useRef } from "react";
 import { useChat } from "@ai-sdk/react";
 import AdviceCard from "@/components/AdviceCard";
+import { toast } from "react-hot-toast";
+
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
 
 export default function AdvicePage() {
   const [score, setScore] = useState<number | null>(null);
   const [answers, setAnswers] = useState<any>(null);
   const [hydrated, setHydrated] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Voice State
+  const [isListening, setIsListening] = useState(false);
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
+  const recognitionRef = useRef<any>(null);
+  const lastMessageCountRef = useRef(0);
 
   const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
     api: "/api/chat",
@@ -46,6 +60,71 @@ export default function AdvicePage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Setup Speech Recognition
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = "en-US";
+
+        recognition.onstart = () => setIsListening(true);
+        recognition.onend = () => setIsListening(false);
+        recognition.onerror = (event: any) => {
+          console.error("Speech error:", event.error);
+          setIsListening(false);
+        };
+
+        recognition.onresult = (event: any) => {
+          const transcript = event.results[0][0].transcript;
+          const simulatedEvent = { target: { value: transcript } } as any;
+          handleInputChange(simulatedEvent);
+        };
+
+        recognitionRef.current = recognition;
+      }
+    }
+  }, [handleInputChange]);
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+    } else {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.start();
+          toast("Listening...", { icon: "🎙️", duration: 2000 });
+        } catch (e) {
+          // already started
+        }
+      } else {
+        toast.error("Speech recognition not supported in this browser.", { icon: "❌" });
+      }
+    }
+  };
+
+  // Setup TTS
+  useEffect(() => {
+    if (!isVoiceEnabled || messages.length === 0) return;
+    
+    if (!isLoading && messages.length > lastMessageCountRef.current) {
+       const latestMessage = messages[messages.length - 1];
+       if (latestMessage.role === "assistant") {
+           window.speechSynthesis.cancel();
+           const msgContent = typeof (latestMessage as any).content === 'string' ? (latestMessage as any).content : '';
+           const utterance = new SpeechSynthesisUtterance(msgContent.replace(/[*#]/g, ''));
+           utterance.rate = 1.0;
+           utterance.pitch = 1.0;
+           window.speechSynthesis.speak(utterance);
+       }
+       lastMessageCountRef.current = messages.length;
+    } else if (isLoading) {
+       // Keep track but don't speak yet
+    }
+  }, [messages, isLoading, isVoiceEnabled]);
+
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#f0f9ff] py-12 px-4 flex flex-col items-center justify-center">
       <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-indigo-200 mix-blend-multiply filter blur-[100px] opacity-50 animate-float"></div>
@@ -67,9 +146,26 @@ export default function AdvicePage() {
                  )}
                </div>
             </div>
-            <a href="/dashboard" className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors bg-indigo-50 hover:bg-indigo-100 py-2 px-4 rounded-full">
-              Back to Dashboard
-            </a>
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => {
+                  if (isVoiceEnabled) window.speechSynthesis.cancel();
+                  setIsVoiceEnabled(!isVoiceEnabled);
+                  toast(isVoiceEnabled ? "AI Voice Muted" : "AI Voice Enabled", { icon: isVoiceEnabled ? "🔇" : "🔊" });
+                }}
+                className={`p-2 rounded-full transition-colors ${isVoiceEnabled ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
+                title={isVoiceEnabled ? "Mute AI Voice" : "Enable AI Voice"}
+              >
+                {isVoiceEnabled ? (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.586l3.707 3.707a1 1 0 001.707-.707V4.993a1 1 0 00-1.707-.707L9.586 8H7a2 2 0 00-2 2z"></path></svg>
+                ) : (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clipRule="evenodd"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+                )}
+              </button>
+              <a href="/dashboard" className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors bg-indigo-50 hover:bg-indigo-100 py-2 px-4 rounded-full">
+                Back to Dashboard
+              </a>
+            </div>
           </div>
 
           {/* Personalized Advice */}
@@ -112,17 +208,28 @@ export default function AdvicePage() {
 
           {/* Input Area */}
           <div className="p-4 bg-white/60 border-t border-indigo-100 backdrop-blur-md">
-            <form onSubmit={handleSubmit} className="relative flex items-center">
+            <form onSubmit={handleSubmit} className="relative flex items-center shadow-sm rounded-full bg-white">
+              <button
+                type="button"
+                onClick={toggleListening}
+                className={`absolute left-2 w-10 h-10 flex items-center justify-center rounded-full transition-all z-10 ${
+                  isListening 
+                    ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/40 scale-110' 
+                    : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
+                }`}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isListening ? "2.5" : "2"} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+              </button>
               <input
-                className="w-full bg-white/80 border border-slate-200 text-slate-800 rounded-full py-4 pl-6 pr-16 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm disabled:opacity-50"
-                value={input}
-                placeholder="Type your message..."
+                className={`w-full bg-transparent border-none text-slate-800 py-4 pr-16 focus:outline-none transition-all disabled:opacity-50 ${isListening ? 'pl-4 shadow-inner bg-red-50/50 rounded-full' : 'pl-14'}`}
+                value={isListening ? 'Listening...' : input}
+                placeholder="Type your message or tap the mic..."
                 onChange={handleInputChange}
-                disabled={isLoading || !hydrated}
+                disabled={isLoading || !hydrated || isListening}
               />
               <button
                 type="submit"
-                disabled={isLoading || !input?.trim() || !hydrated}
+                disabled={isLoading || !input?.trim() || !hydrated || isListening}
                 className="absolute right-2 top-2 bottom-2 w-10 h-10 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full flex items-center justify-center transition-colors disabled:opacity-50 disabled:hover:bg-indigo-600"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-1">
