@@ -28,9 +28,25 @@ export default function CheckinPage() {
 
     const totalScore = answers.reduce((sum, val) => sum + val, 0);
 
-    // SAVE SCORE CORRECTLY
+    // SAVE SCORE CORRECTLY (Latest)
     localStorage.setItem("sthir-score", totalScore.toString());
     localStorage.setItem("sthir-answers", JSON.stringify(answers));
+
+    // SAVE TO HISTORY ARRAY
+    const newRecord = {
+      date: new Date().toISOString(),
+      score: totalScore,
+      answers: answers
+    };
+    
+    try {
+      const historyStr = localStorage.getItem("sthir-history");
+      const history = historyStr ? JSON.parse(historyStr) : [];
+      history.push(newRecord);
+      localStorage.setItem("sthir-history", JSON.stringify(history));
+    } catch (e) {
+      console.error("Failed to save history:", e);
+    }
 
     // REDIRECT
     router.push("/advice");

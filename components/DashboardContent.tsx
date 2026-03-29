@@ -91,7 +91,7 @@ export default function DashboardContent() {
   if (!answers) {
     return (
       <div className="bg-white p-6 relative w-full min-h-screen">
-        <div className="max-w-2xl mx-auto glass-card p-10 text-center animate-scale-up">
+        <div className="max-w-2xl mx-auto bg-white border border-gray-200 rounded-xl p-10 text-center animate-scale-up shadow-sm">
           <h1 className="text-3xl font-extrabold text-slate-800 mb-4 tracking-tight">
             Detailed Wellness Report
           </h1>
