@@ -15,8 +15,8 @@
     "ai": "^6.0.116",
     "next": "16.0.7",
     "next-pwa": "^5.6.0",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "react-hot-toast": "^2.6.0",
     "recharts": "^3.5.1"
   },
