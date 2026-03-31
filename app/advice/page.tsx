@@ -21,7 +21,7 @@ export default function AdvicePage() {
   const lastMessageCountRef = useRef(0);
 
   const [input, setInput] = useState("");
-  const { messages, sendMessage, isLoading, error } = useChat({
+  const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({ api: "/api/chat" }),
     messages: [
       {
@@ -31,6 +31,7 @@ export default function AdvicePage() {
       }
     ]
   });
+  const isLoading = status === 'submitted' || status === 'streaming';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
