@@ -3,15 +3,10 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import AdviceCard from "@/components/AdviceCard";
 import { toast } from "react-hot-toast";
-
-declare global {
-  interface Window {
-    SpeechRecognition: any;
-    webkitSpeechRecognition: any;
-  }
-}
+import Link from "next/link";
 
 export default function AdvicePage() {
   const [score, setScore] = useState<number | null>(null);
@@ -25,20 +20,31 @@ export default function AdvicePage() {
   const recognitionRef = useRef<any>(null);
   const lastMessageCountRef = useRef(0);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
-    api: "/api/chat",
-    body: {
-      score,
-      answers,
-    },
-    initialMessages: [
+  const [input, setInput] = useState("");
+  const { messages, sendMessage, isLoading, error } = useChat({
+    transport: new DefaultChatTransport({ api: "/api/chat" }),
+    messages: [
       {
         id: "initial-msg",
         role: "assistant",
-        content: "Hi there. I'm your Sthir AI wellness companion. I'm looking at your recent check-in, and I'm here to listen. How are you feeling right now?"
+        parts: [{ type: "text", text: "Hi there. I'm your Sthir AI wellness companion. I'm looking at your recent check-in, and I'm here to listen. How are you feeling right now?" }]
       }
     ]
   });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!input.trim() || isLoading || !hydrated || isListening) return;
+    sendMessage(
+      { text: input },
+      { body: { score, answers } }
+    );
+    setInput("");
+  };
 
   useEffect(() => {
     setHydrated(true);
@@ -63,7 +69,7 @@ export default function AdvicePage() {
   // Setup Speech Recognition
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
         recognition.continuous = false;
@@ -79,14 +85,13 @@ export default function AdvicePage() {
 
         recognition.onresult = (event: any) => {
           const transcript = event.results[0][0].transcript;
-          const simulatedEvent = { target: { value: transcript } } as any;
-          handleInputChange(simulatedEvent);
+          setInput(transcript);
         };
 
         recognitionRef.current = recognition;
       }
     }
-  }, [handleInputChange]);
+  }, [setInput]);
 
   const toggleListening = () => {
     if (isListening) {
@@ -111,9 +116,9 @@ export default function AdvicePage() {
     
     if (!isLoading && messages.length > lastMessageCountRef.current) {
        const latestMessage = messages[messages.length - 1];
-       if (latestMessage.role === "assistant") {
+       if (latestMessage?.role === "assistant") {
            window.speechSynthesis.cancel();
-           const msgContent = typeof (latestMessage as any).content === 'string' ? (latestMessage as any).content : '';
+           const msgContent = latestMessage.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('') || '';
            const utterance = new SpeechSynthesisUtterance(msgContent.replace(/[*#]/g, ''));
            utterance.rate = 1.0;
            utterance.pitch = 1.0;
@@ -162,9 +167,9 @@ export default function AdvicePage() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clipRule="evenodd"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
                 )}
               </button>
-              <a href="/dashboard" className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors bg-indigo-50 hover:bg-indigo-100 py-2 px-4 rounded-full">
+              <Link href="/dashboard" className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors bg-indigo-50 hover:bg-indigo-100 py-2 px-4 rounded-full">
                 Back to Dashboard
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -185,7 +190,7 @@ export default function AdvicePage() {
                       : 'bg-white border border-indigo-50 text-slate-700 rounded-tl-sm'
                   }`}>
                     {/* Simple formatting for markdown-like text */}
-                    {typeof (m as any).content === 'string' && ((m as any).content as string).split('\n').map((line: string, i: number) => (
+                    {m.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('').split('\n').map((line: string, i: number) => (
                       <p key={i} className={`mb-1 last:mb-0 ${m.role === 'user' ? 'text-white/90' : 'text-slate-600'}`}>
                         {line}
                       </p>

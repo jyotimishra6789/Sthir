@@ -9,8 +9,9 @@
 "lint": "eslint"
 },
 "dependencies": {
-"@ai-sdk/google": "^3.0.43",
-"@google/genai": "^1.45.0",
+    "@ai-sdk/google": "^3.0.43",
+    "@ai-sdk/react": "latest",
+    "@google/genai": "^1.45.0",
 "ai": "^6.0.116",
 "next": "16.0.7",
 "next-pwa": "^5.6.0",
