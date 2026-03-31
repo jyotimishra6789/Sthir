@@ -3,7 +3,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+import { DefaultChatTransport, type UIMessage } from "ai";
 import AdviceCard from "@/components/AdviceCard";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
@@ -28,7 +28,7 @@ export default function AdvicePage() {
         id: "initial-msg",
         role: "assistant",
         parts: [{ type: "text", text: "Hi there. I'm your Sthir AI wellness companion. I'm looking at your recent check-in, and I'm here to listen. How are you feeling right now?" }]
-      }
+      } as UIMessage
     ]
   });
   const isLoading = status === 'submitted' || status === 'streaming';
