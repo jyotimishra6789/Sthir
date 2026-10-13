@@ -12,6 +12,9 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Messages are required' }, { status: 400 });
     }
 
+    const k = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    console.log("DEBUG key prefix:", k?.slice(0, 6), "| last4:", k?.slice(-4), "| length:", k?.length, "| other vars:", Object.keys(process.env).filter((n) => /GOOGLE|GEMINI/i.test(n)));
+
     const system = `
 You are a warm, empathetic, comforting, and encouraging mental wellness AI companion on the "Sthir" app.
 Your goal is to converse with the user like a gentle therapist—validating their feelings, and offering gentle suggestions (like resting, hydrating, or celebrating a good day).
