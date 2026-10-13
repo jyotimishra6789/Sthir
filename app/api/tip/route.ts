@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     const { text } = await generateText({
-      model: google('gemini-2.5-flash'),
+      model: google('gemini-flash-latest'),
       system: "You are a wellness companion for the 'Sthir' app. Your goal is to generate one very short, highly highly unique, uplifting, and actionable mental well-being or self-care tip. Maximum 2 sentences. Do not use generic phrases. Be creative and unique every single time.",
       prompt: "Give me a fresh, completely unique daily wellness tip.",
     });

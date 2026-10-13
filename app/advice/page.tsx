@@ -244,7 +244,7 @@ export default function AdvicePage() {
               </button>
             </form>
             {error && (
-              <p className="text-red-500 text-xs mt-2 ml-4">Failed to send message. Please try again.</p>
+              <p className="text-red-500 text-xs mt-2 ml-4 break-words">Failed to send message: {error.message}</p>
             )}
           </div>
           

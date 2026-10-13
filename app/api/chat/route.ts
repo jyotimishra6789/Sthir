@@ -28,7 +28,7 @@ Rules:
 `;
 
     const result = streamText({
-      model: google('gemini-2.5-flash'),
+      model: google('gemini-flash-latest'),
       system,
       // v5: UIMessage (parts) -> ModelMessage. It is async.
       messages: await convertToModelMessages(messages),
